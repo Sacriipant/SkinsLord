@@ -1,0 +1,125 @@
+/* styles.css — SkinBaron Price Compare injected styles */
+
+.sbpc-price-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  padding: 2px 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  z-index: 10;
+  position: relative;
+}
+
+.sbpc-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.sbpc-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px 2px 4px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.sbpc-source:hover {
+  opacity: 0.85;
+}
+
+/* CSFloat — dark teal */
+.sbpc-csfloat {
+  background: #0f2027;
+  color: #00e5cc;
+  border-color: #00e5cc44;
+}
+
+.sbpc-csfloat .sbpc-price {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Buff163 — orange */
+.sbpc-buff {
+  background: #1e1200;
+  color: #ff9800;
+  border-color: #ff980044;
+}
+
+.sbpc-buff .sbpc-price {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* N/A state */
+.sbpc-na {
+  opacity: 0.55;
+}
+
+.sbpc-na em {
+  font-style: normal;
+  color: #888;
+}
+
+.sbpc-label {
+  font-size: 10px;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sbpc-price {
+  font-size: 12px;
+}
+
+.sbpc-logo {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+/* Error state */
+.sbpc-error {
+  font-size: 10px;
+  color: #ff4444;
+  opacity: 0.7;
+}
+
+/* Loading dots */
+.sbpc-loading {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  padding: 3px 6px;
+  background: #1a1a1a;
+  border-radius: 4px;
+}
+
+.sbpc-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #555;
+  animation: sbpc-pulse 1.2s ease-in-out infinite;
+}
+
+.sbpc-dot:nth-child(2) { animation-delay: 0.2s; }
+.sbpc-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes sbpc-pulse {
+  0%, 80%, 100% { background: #333; transform: scale(0.8); }
+  40%           { background: #00e5cc; transform: scale(1.1); }
+}

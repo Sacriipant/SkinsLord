@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkinsLord</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 300px;
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f2027 0%, #161b22 100%);
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header h1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #00e5cc;
+      letter-spacing: 0.2px;
+    }
+
+    header p {
+      font-size: 10px;
+      color: #8b949e;
+      margin-top: 1px;
+    }
+
+    .icon-wrap {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #00e5cc22, #ff980022);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    main {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .section-title {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #8b949e;
+      margin-bottom: 8px;
+    }
+
+    /* Toggle row */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+    }
+
+    .toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .source-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .source-dot.csfloat { background: #00e5cc; }
+    .source-dot.buff    { background: #ff9800; }
+
+    /* Switch */
+    .switch {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #30363d;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+
+    input:checked + .slider { background: #00e5cc; }
+    input:checked + .slider::before { transform: translateX(16px); background: #0d1117; }
+
+    /* Currency selector */
+    .select-wrap {
+      position: relative;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px 30px 8px 10px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      color: #e6edf3;
+      font-size: 13px;
+      appearance: none;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    select:focus { border-color: #00e5cc88; }
+
+    .select-arrow {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #8b949e;
+      font-size: 11px;
+    }
+
+    /* API key input */
+    .input-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .input-wrap label {
+      font-size: 11px;
+      color: #8b949e;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    input[type="text"], input[type="password"] {
+      flex: 1;
+      padding: 7px 10px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      color: #e6edf3;
+      font-size: 12px;
+      font-family: monospace;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus { border-color: #ff980088; }
+
+    .hint {
+      font-size: 10px;
+      color: #8b949e;
+      line-height: 1.4;
+    }
+
+    .hint a {
+      color: #ff9800;
+      text-decoration: none;
+    }
+
+    /* Save button */
+    button {
+      width: 100%;
+      padding: 9px;
+      background: linear-gradient(135deg, #00e5cc, #00b4aa);
+      border: none;
+      border-radius: 8px;
+      color: #0d1117;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      letter-spacing: 0.2px;
+    }
+
+    button:hover { opacity: 0.9; }
+    button:active { opacity: 0.75; }
+
+    /* Status */
+    #status {
+      text-align: center;
+      font-size: 11px;
+      color: #00e5cc;
+      min-height: 16px;
+      transition: opacity 0.3s;
+    }
+
+    footer {
+      padding: 8px 16px;
+      border-top: 1px solid #21262d;
+      text-align: center;
+      font-size: 10px;
+      color: #484f58;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="icon-wrap">💹</div>
+  <div>
+    <h1>SkinsLord</h1>
+    <p>CSFloat &amp; Buff163 prices on SkinBaron</p>
+  </div>
+</header>
+
+<main>
+
+  <!-- Sources -->
+  <div>
+    <div class="section-title">Price Sources</div>
+
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="toggle-row">
+        <div class="toggle-label">
+          <div class="source-dot csfloat"></div>
+          <span>CSFloat</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="showCsfloat" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-label">
+          <div class="source-dot buff"></div>
+          <span>Buff163</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="showBuff" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Currency -->
+  <div>
+    <div class="section-title">Display Currency</div>
+    <div class="select-wrap">
+      <select id="currency">
+        <option value="EUR">EUR — Euro €</option>
+        <option value="USD">USD — US Dollar $</option>
+        <option value="GBP">GBP — British Pound £</option>
+        <option value="CNY">CNY — Chinese Yuan ¥</option>
+      </select>
+      <span class="select-arrow">▾</span>
+    </div>
+  </div>
+
+  <!-- Pricempire API Key (for live Buff prices) -->
+  <div>
+    <div class="section-title">Buff Live Prices (Optional)</div>
+    <div class="input-wrap">
+      <label>Pricempire API Key</label>
+      <div class="input-row">
+        <input type="password" id="pricempireKey" placeholder="Paste your API key…" />
+      </div>
+      <span class="hint">
+        For real-time Buff prices. Free key at
+        <a href="https://pricempire.com" target="_blank">pricempire.com</a>.
+        Without a key, community prices are used (updated hourly).
+      </span>
+    </div>
+  </div>
+
+  <!-- Save -->
+  <button id="saveBtn">Save Settings</button>
+  <div id="status"></div>
+
+</main>
+
+<footer>Prices refresh every 5 min · by Sacripant · v1.0</footer>
+
+<script src="popup.js"></script>
+</body>
+</html>
