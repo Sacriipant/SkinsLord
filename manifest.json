@@ -13,7 +13,8 @@
     "https://csfloat.com/*",
     "https://api.csfloat.com/*",
     "https://buff.163.com/*",
-    "https://prices.csgotrader.app/*"
+    "https://prices.csgotrader.app/*",
+    "https://api.frankfurter.app/*"
   ],
   "content_scripts": [
     {
