@@ -5,19 +5,20 @@ Chrome extension by **Sacripant** that displays **CSFloat** and **Buff163** pric
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Manifest](https://img.shields.io/badge/manifest-v3-green)
 
-##  Features
+## ✨ Features
 
--  **Real-time CSFloat prices** — fetches lowest buy-now listings from CSFloat API
--  **Buff163 prices** — community price data (hourly updates) or live via Pricempire API
--  **Dual injection** — prices appear on both:
+- 🔥 **Real-time CSFloat prices** — lowest buy-now listings only (no bids)
+- 💰 **Buff163 prices** — lowest listing prices only (not buy orders/bids)
+- 💱 **Live exchange rates** — auto-updated every 24h from frankfurter.app API
+- 📊 **Dual injection** — prices appear on both:
   - Browse page item cards (compact badges)
   - Item detail modal popups (full-size badges)
--  **Multi-currency** — display in EUR, USD, GBP, or CNY
--  **Smart caching** — 5-minute cache prevents API rate limits
--  **Accurate name matching** — handles knives (★), gloves, French wear names, hyphenated weapons
--  **Settings popup** — toggle sources, pick currency, add Pricempire API key
+- 🌍 **Multi-currency** — display in EUR, USD, GBP, or CNY with accurate live rates
+- ⚡ **Smart caching** — 5-minute cache for prices, 24h cache for exchange rates
+- 🎯 **Accurate name matching** — handles knives (★), gloves, French wear names, hyphenated weapons
+- 🔧 **Settings popup** — toggle sources, pick currency, add Pricempire API key
 
-##  Installation
+## 📦 Installation
 
 ### Method 1: Load Unpacked (Development)
 
@@ -43,7 +44,7 @@ Chrome extension by **Sacripant** that displays **CSFloat** and **Buff163** pric
 2. Unzip it
 3. Follow steps 2-4 above
 
-##  Usage
+## 🚀 Usage
 
 1. **Browse SkinBaron** — prices appear automatically under each item card
 2. **Click any item** — prices also show in the modal popup
@@ -59,7 +60,7 @@ Click the extension icon in your toolbar to configure:
   - Get a free key at [pricempire.com](https://pricempire.com)
   - Without a key, the extension uses community price data updated hourly
 
-##  How It Works
+## 🏗️ How It Works
 
 ### Card Injection
 - Detects `<a class="offer-card">` elements on browse pages
@@ -90,15 +91,23 @@ Click the extension icon in your toolbar to configure:
    ```
    GET https://csfloat.com/api/v1/listings?market_hash_name=...&limit=5&sort_by=lowest_price&type=buy_now
    ```
-   Returns lowest 5 listings; extension shows the cheapest.
+   Returns lowest 5 **buy-now listings** (not bids); extension shows the cheapest.
 
 2. **Buff163** (two methods):
-   - **Community prices** (default): `https://prices.csgotrader.app/latest/buff163.json` — updated hourly
+   - **Community prices** (default): `https://prices.csgotrader.app/latest/buff163.json` — updated hourly, **listing prices only**
    - **Live prices** (with Pricempire key): `https://api.pricempire.com/v3/items/prices?api_key=...&market_hash_name=...&sources=buff163`
 
-3. **Caching**: Results cached for 5 minutes in the service worker to avoid rate limits.
+3. **Exchange Rates**:
+   - Fetched live from **Frankfurter.app** (free, no API key needed)
+   - Updated every 24 hours automatically
+   - Base currency: USD → EUR, GBP, CNY
+   - Cached in service worker for fast conversions
 
-##  Project Structure
+4. **Caching**: 
+   - Prices cached for 5 minutes
+   - Exchange rates cached for 24 hours
+
+## 🔧 Project Structure
 
 ```
 skinslord/
@@ -115,7 +124,7 @@ skinslord/
     └── csfloat.png
 ```
 
-##  Troubleshooting
+## 🐛 Troubleshooting
 
 ### Prices show as N/A
 
@@ -152,7 +161,7 @@ The market hash name reconstruction might be incorrect:
 
 If the name is wrong, report the item URL as an issue!
 
-##  Development
+## 🛠️ Development
 
 ### Testing Changes
 
@@ -181,14 +190,14 @@ Open browser console on SkinBaron:
 // Look for name extraction and API responses
 ```
 
-##  Known Limitations
+## 📝 Known Limitations
 
 - **CORS**: Background service worker needs `host_permissions` for CSFloat/Buff APIs
 - **Rate limits**: CSFloat API is rate-limited; caching mitigates this
 - **Name matching**: Some obscure items might have incorrect market hash names — report them!
 - **SPA navigation**: Uses `setInterval` to detect route changes (Angular doesn't fire navigation events)
 
-##  Contributing
+## 🤝 Contributing
 
 1. Fork the repo
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -196,11 +205,11 @@ Open browser console on SkinBaron:
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-##  License
+## 📜 License
 
 MIT License - feel free to use, modify, and distribute.
 
-##  Acknowledgments
+## 🙏 Acknowledgments
 
 - **Sacripant** — creator and developer
 - **CSFloat** for their public API

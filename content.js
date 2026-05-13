@@ -15,7 +15,8 @@
     pricempireKey: ''
   };
 
-  const FX = { USD: 1, EUR: 0.92, GBP: 0.79, CNY: 7.24 };
+  // Live exchange rates (fetched from background, updated every 24h)
+  let exchangeRates = { USD: 1, EUR: 0.92, GBP: 0.79, CNY: 7.24 }; // fallback
   const PRICE_BADGE_CLASS = 'sbpc-price-badge';
   const processed = new WeakSet();
 
@@ -66,7 +67,7 @@
 
   function convertPrice(amount, fromCurrency) {
     if (fromCurrency === settings.currency) return amount;
-    return (amount / (FX[fromCurrency] || 1)) * (FX[settings.currency] || 1);
+    return (amount / (exchangeRates[fromCurrency] || 1)) * (exchangeRates[settings.currency] || 1);
   }
 
   function formatPrice(amount, currency) {
@@ -179,6 +180,12 @@
       resp => {
         if (chrome.runtime.lastError) { markError(badge, chrome.runtime.lastError.message); return; }
         if (!resp?.success)           { markError(badge, resp?.error || 'fetch failed'); return; }
+        
+        // Update exchange rates from background
+        if (resp.rates) {
+          exchangeRates = resp.rates;
+        }
+        
         fillBadge(badge, resp.prices, marketHashName);
       }
     );

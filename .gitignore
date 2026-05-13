@@ -1,0 +1,22 @@
+# Packaged extension
+*.zip
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Node modules (if we add build tools later)
+node_modules/
+
+# Temp files
+*.tmp

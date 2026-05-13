@@ -1,14 +1,46 @@
 // background.js — Service Worker
 // Handles API requests and caching to avoid rate-limiting
 
-const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes for prices
+const RATE_CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours for FX rates
 const priceCache = new Map(); // { marketHashName: { csfloat, buff, timestamp } }
+let exchangeRates = { USD: 1, EUR: 0.92, GBP: 0.79, CNY: 7.24 }; // fallback rates
+let ratesLastFetched = 0;
+
+// Fetch live exchange rates from frankfurter.app (free, no API key needed)
+async function updateExchangeRates() {
+  if (Date.now() - ratesLastFetched < RATE_CACHE_DURATION_MS) {
+    return; // rates are fresh
+  }
+
+  try {
+    const res = await fetch('https://api.frankfurter.app/latest?from=USD&to=EUR,GBP,CNY');
+    if (!res.ok) throw new Error(`FX API error: ${res.status}`);
+    const json = await res.json();
+    
+    exchangeRates = {
+      USD: 1,
+      EUR: json.rates.EUR,
+      GBP: json.rates.GBP,
+      CNY: json.rates.CNY
+    };
+    ratesLastFetched = Date.now();
+    console.log('[SBPC] Updated exchange rates:', exchangeRates);
+  } catch (err) {
+    console.warn('[SBPC] Failed to update exchange rates, using cached:', err.message);
+  }
+}
+
+// Update rates on service worker startup
+updateExchangeRates();
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'FETCH_PRICES') {
-    fetchPrices(message.marketHashName, message.currency)
-      .then(prices => sendResponse({ success: true, prices }))
-      .catch(err => sendResponse({ success: false, error: err.message }));
+    (async () => {
+      await updateExchangeRates(); // Refresh if needed
+      const prices = await fetchPrices(message.marketHashName, message.currency);
+      sendResponse({ success: true, prices, rates: exchangeRates });
+    })().catch(err => sendResponse({ success: false, error: err.message }));
     return true; // keep channel open for async response
   }
 
@@ -104,7 +136,8 @@ async function fetchBuff(marketHashName) {
   const entry = json[marketHashName];
   if (!entry) return null;
 
-  const priceRMB = entry.starting_at?.price ?? entry.highest_buy_order;
+  // ONLY use listing price (starting_at), NOT buy orders (bids)
+  const priceRMB = entry.starting_at?.price;
   if (!priceRMB) return null;
 
   return {
