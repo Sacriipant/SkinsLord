@@ -14,7 +14,7 @@
     showBuff:      true,
     pricempireKey: ''
   };
-
+ 
   // Live exchange rates (fetched from background, updated every 24h)
   let exchangeRates = { USD: 1, EUR: 0.92, GBP: 0.79, CNY: 7.24 }; // fallback
   const PRICE_BADGE_CLASS = 'sbpc-price-badge';
